@@ -17,7 +17,7 @@ def demo_simulated():
     print("=== 演示1：模拟模式 ===")
     
     llm = create_llm("simulated")
-    data_summary = summarize_directory("D:\\agent\\CRWU", max_files_per_folder=1)
+    data_summary = summarize_directory("data/CWRU", max_files_per_folder=1)
     session = AgentSession(llm, data_summary)
     
     # 测试几个对话回合

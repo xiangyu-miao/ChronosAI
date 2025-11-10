@@ -129,8 +129,11 @@ class AgentSession:
             
             # 显示LLM输出
             print("\n[Agent思考]")
-            print(result["llm_output"])
-            
+            try:
+                print(result["llm_output"])
+            except KeyError:
+                print("未能获取Agent输出")
+
             # 显示工具调用结果
             if result.get("action"):
                 print(f"\n[调用工具] {result['action']}")

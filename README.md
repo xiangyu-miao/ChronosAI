@@ -122,7 +122,7 @@ python cli.py chat --data_dir "data/CWRU" --llm api --api-url "https://api.opena
 或者使用环境变量：
 ```powershell
 $env:OPENAI_API_KEY="your_key"
-python cli.py chat --data-dir "data/CWRU/" --llm api
+python cli.py chat --data_dir "data/CWRU" --llm api
 ```
 
 ## 6. LLM集成说明
