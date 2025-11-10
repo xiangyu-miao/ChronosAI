@@ -1,0 +1,196 @@
+Agent（阶段一）——基于Prompt驱动的时序数据分析Agent
+
+## 目录
+- [1. 项目简介](#1-项目简介)
+- [2. 快速开始](#2-快速开始)
+- [3. 目录结构](#3-目录结构)
+- [4. 依赖安装](#4-依赖安装)
+- [5. 运行方式](#5-运行方式)
+- [6. LLM集成说明](#6-llm集成说明)
+- [7. 设计说明](#7-设计说明)
+
+## 1. 项目简介
+本项目实现"仅用Prompt驱动、不做微调"的LLM Agent框架原型，聚焦工程时序数据分析任务（以CRWU轴承数据为示例）。
+
+**核心功能**
+- 数据加载、摘要统计
+- 时序可视化
+- IQR异常检测
+- 结果保存
+
+**技术特点**
+- 支持三种LLM模式：模拟、本地推理、API调用
+- 可对话，自动调用工具完成分析任务
+- 无需模型微调，纯Prompt驱动
+
+数据目录：`D:\agent\CRWU`
+
+## 2. 快速开始
+
+### Windows PowerShell环境
+```powershell
+# 创建虚拟环境
+py -3.10 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+
+# 安装基础依赖
+pip install -U pip
+pip install -e .
+
+# 安装本地推理依赖（可选，用于--llm=local）
+pip install -e ".[local]"
+```
+
+## 3. 目录结构
+```
+D:\agent
+├─ CRWU\                    # 示例数据（.mat文件）
+├─ agentkit\                 # 核心Agent代码
+│  ├─ __init__.py
+│  ├─ config.py              # 配置管理
+│  ├─ llm.py                 # LLM接口层（本地/API）
+│  ├─ tools\                 # 工具库
+│  │  ├─ __init__.py
+│  │  ├─ io_tools.py         # 数据加载/保存
+│  │  ├─ stats_tools.py      # 统计摘要
+│  │  ├─ viz_tools.py        # 可视化
+│  │  └─ anomaly_tools.py    # 异常检测
+│  ├─ preprocessing.py       # 数据预处理
+│  ├─ prompt.py              # Prompt构造器
+│  ├─ executor.py            # 工具执行器
+│  └─ chat.py                # 对话式入口
+├─ cli.py                    # 命令行入口
+├─ pyproject.toml
+└─ README.md
+```
+
+## 4. 依赖安装
+
+### 基础依赖（必需）
+```powershell
+pip install -e .
+```
+包含：pandas, numpy, scipy, matplotlib, seaborn, pydantic, requests
+
+### 本地推理依赖（可选，`--llm=local`时需安装）
+```powershell
+pip install -e ".[local]"
+```
+包含：transformers, torch, accelerate
+
+## 5. 运行方式
+
+### 5.1 生成数据摘要
+```powershell
+python cli.py summarize --data-dir "D:\agent\CRWU" --max-files 2
+```
+
+### 5.2 对话式Agent（三种模式）
+
+**模式1：模拟模式（无需模型，测试用）**
+```powershell
+python cli.py chat --data-dir "D:\agent\CRWU" --llm simulated
+```
+
+**模式2：本地推理（需要下载模型）**
+```powershell
+python cli.py chat --data-dir "D:\agent\CRWU" --llm local --model microsoft/Phi-3-mini-4k-instruct --device cuda
+```
+
+**模式3：API调用（需提供密钥）**
+```powershell
+python cli.py chat --data-dir "D:\agent\CRWU" --llm api --api-url "https://api.openai.com/v1" --api-key YOUR_KEY --api-model gpt-3.5-turbo
+```
+
+或者使用环境变量：
+```powershell
+$env:OPENAI_API_KEY="your_key"
+python cli.py chat --data-dir "D:\agent\CRWU" --llm api
+```
+
+## 6. LLM集成说明
+
+### 6.1 模拟模式（SimulatedLLM）
+用途：测试框架和工具调用逻辑  
+特点：
+- 无需真实模型，通过规则匹配生成Action
+- 适合验证Agent架构和工具链
+- 示例输出：自动识别"加载"、"可视化"等关键词
+
+### 6.2 本地推理（TransformersLLM）
+用途：本地运行开源模型（如Phi-3、Llama等）  
+配置：
+```python
+llm = create_llm(
+    llm_type="local",
+    model_path="microsoft/Phi-3-mini-4k-instruct",  # 或本地路径
+    device="cuda"  # 'cpu'或'cuda'
+)
+```
+支持：
+- HuggingFace模型（自动下载）
+- 本地模型目录
+- CPU/CUDA自动选择
+
+### 6.3 API调用（APILLM）
+用途：调用云端LLM服务（OpenAI、Anthropic等）  
+配置：
+```python
+llm = create_llm(
+    llm_type="api",
+    base_url="https://api.openai.com/v1",
+    api_key="xxx",
+    model_name="gpt-3.5-turbo"
+)
+```
+兼容：
+- OpenAI格式（ChatGPT）
+- 自部署OpenAI兼容API
+- Anthropic Claude（需调整URL）
+
+## 7. 设计说明
+
+### 7.1 Agent工作流程
+```
+用户输入 → Prompt构造器 → LLM推理 → 提取Action → 工具执行器 → 工具结果反馈 → 继续对话
+```
+
+### 7.2 Prompt结构
+```
+--- System Message ---
+角色定义、工作流程、核心原则
+
+--- Tools ---
+工具1: 描述...
+工具2: 描述...
+
+--- Current Data Context ---
+数据摘要（来自preprocessing.py）
+
+--- User Instruction ---
+用户自然语言指令
+
+--- Begin Task ---
+Thought: <LLM思考>
+Action: <工具调用>
+```
+
+### 7.3 工具库
+- `load_dataframe`: 加载CSV/Parquet/HDF5/MAT
+- `describe_dataframe`: 数据统计摘要
+- `plot_time_series`: 时序可视化
+- `detect_anomalies_iqr`: IQR异常检测
+- `save_dataframe`: 保存结果
+
+### 7.4 阶段目标
+- ✅ 可对话的Agent
+- ✅ 可通过自然语言调用工具
+- ✅ 支持多种LLM后端
+- ✅ 文件操作功能完整（性能不要求）
+
+---
+
+**开发提示**  
+- 首次使用建议从`--llm simulated`开始熟悉框架
+- 本地推理需先下载模型（首次运行自动下载）
+- API模式需有效密钥和网络连接
