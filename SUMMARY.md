@@ -77,7 +77,7 @@ D:\agent
 
 ### 模式1：模拟模式（推荐新手）
 ```powershell
-python cli.py chat --data-dir "D:\agent\CRWU" --llm simulated
+python cli.py chat --data_dir "data/CWRU" --llm simulated
 ```
 - ✅ 无需真实模型
 - ✅ 规则匹配生成Action
@@ -86,7 +86,7 @@ python cli.py chat --data-dir "D:\agent\CRWU" --llm simulated
 ### 模式2：本地推理
 ```powershell
 # 需要先安装: pip install -e ".[local]"
-python cli.py chat --data-dir "D:\agent\CRWU" --llm local --device cpu
+python cli.py chat --data_dir "data/CWRU" --llm local --device cpu
 ```
 - ✅ 基于transformers
 - ✅ 支持Phi-3、Llama等开源模型
@@ -95,7 +95,7 @@ python cli.py chat --data-dir "D:\agent\CRWU" --llm local --device cpu
 ### 模式3：API调用
 ```powershell
 $env:OPENAI_API_KEY="your_key"
-python cli.py chat --data-dir "D:\agent\CRWU" --llm api
+python cli.py chat --data_dir "data/CWRU" --llm api
 ```
 - ✅ OpenAI兼容接口
 - ✅ 支持GPT-3.5/GPT-4等
@@ -124,16 +124,16 @@ python cli.py chat --data-dir "D:\agent\CRWU" --llm api
 python quick_test.py
 
 # 2. 生成数据摘要
-python cli.py summarize --data-dir "D:\agent\CRWU" --max-files 2
+python cli.py summarize --data_dir "data/CWRU" --max_files 2
 
 # 3. 启动对话式Agent（模拟模式）
-python cli.py chat --data-dir "D:\agent\CRWU" --llm simulated
+python cli.py chat --data_dir "data/CWRU" --llm simulated
 
 # 4. 使用本地推理（需GPU或等待CPU推理）
-python cli.py chat --data-dir "D:\agent\CRWU" --llm local --device cuda
+python cli.py chat --data_dir "data/CWRU" --llm local --device cuda
 
 # 5. 使用API
-python cli.py chat --data-dir "D:\agent\CRWU" --llm api --api-model gpt-3.5-turbo
+python cli.py chat --data_dir "data/CWRU" --llm api --api-model gpt-3.5-turbo
 ```
 
 ## 🎯 核心特性

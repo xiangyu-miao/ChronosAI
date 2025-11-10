@@ -43,10 +43,11 @@ def demo_local():
     try:
         llm = create_llm(
             "local",
-            model_path="microsoft/Phi-3-mini-4k-instruct",
+            # model_path="microsoft/Phi-3-mini-4k-instruct",
+            model_path = "THUDM/chatglm3-6b",
             device="cpu"  # 用CPU避免显存问题
         )
-        print("模型加载成功！")
+        print("模型加载中...")
         
         # 简单测试
         response = llm.generate("你好，请回答：1+1等于几？", max_tokens=50)

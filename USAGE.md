@@ -53,10 +53,10 @@ pip install -e ".[local]"
 **步骤2：运行**
 ```powershell
 # 使用CPU（推荐，避免显存问题）
-python cli.py chat --data-dir "D:\agent\CRWU" --llm local --device cpu
+python cli.py chat --data_dir "data/CWRU" --llm local --device cpu
 
 # 使用CUDA（需要NVIDIA GPU）
-python cli.py chat --data-dir "D:\agent\CRWU" --llm local --device cuda
+python cli.py chat --data_dir "data/CWRU" --llm local --device cuda
 ```
 
 **首次运行会自动下载模型**（约7-8GB，取决于模型选择）。
@@ -73,17 +73,17 @@ $env:OPENAI_API_KEY="your_api_key_here"
 **步骤2：运行**
 ```powershell
 # 默认使用gpt-3.5-turbo
-python cli.py chat --data-dir "D:\agent\CRWU" --llm api
+python cli.py chat --data_dir "data/CWRU" --llm api
 
 # 自定义API配置
-python cli.py chat --data-dir "D:\agent\CRWU" --llm api --api-url "https://api.openai.com/v1" --api-key YOUR_KEY --api-model gpt-4
+python cli.py chat --data_dir "data/CWRU" --llm api --api-url "https://api.openai.com/v1" --api-key YOUR_KEY --api-model gpt-4
 ```
 
 ## 三、完整对话示例
 
 启动对话：
 ```powershell
-python cli.py chat --data-dir "D:\agent\CRWU" --llm simulated
+python cli.py chat --data_dir "data/CWRU" --llm simulated
 ```
 
 交互过程：

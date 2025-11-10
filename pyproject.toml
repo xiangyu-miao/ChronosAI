@@ -24,7 +24,8 @@ dependencies = [
 local = [
   "transformers>=4.35.0",
   "torch>=2.0.0",
-  "accelerate>=0.24.0"
+  "accelerate>=0.24.0",
+  "sentencepiece>=0.2.1"
 ]
 
 [project.scripts]
