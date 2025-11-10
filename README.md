@@ -1,4 +1,4 @@
-Agent（阶段一）——基于Prompt驱动的时序数据分析Agent
+# Agent（阶段一）——基于Prompt驱动的时序数据分析Agent
 
 ## 目录
 - [1. 项目简介](#1-项目简介)
@@ -23,7 +23,7 @@ Agent（阶段一）——基于Prompt驱动的时序数据分析Agent
 - 可对话，自动调用工具完成分析任务
 - 无需模型微调，纯Prompt驱动
 
-数据目录：`D:\agent\CRWU`
+默认数据目录：`data/CWRU`，包含部分示例.mat文件。
 
 ## 2. 快速开始
 
@@ -41,10 +41,24 @@ pip install -e .
 pip install -e ".[local]"
 ```
 
+### conda环境 (推荐)
+```bash
+# 创建conda环境
+conda create -n chronosai python=3.10
+conda activate chronosai
+
+# 安装基础依赖
+pip install -e .
+
+# 安装本地推理依赖（可选，用于--llm=local）
+pip install -e ".[local]"
+```
+
 ## 3. 目录结构
 ```
-D:\agent
-├─ CRWU\                    # 示例数据（.mat文件）
+ChronosAI\
+├─ data\                     # 数据目录
+│  └─ CWRU\                  # 示例数据（.mat文件）
 ├─ agentkit\                 # 核心Agent代码
 │  ├─ __init__.py
 │  ├─ config.py              # 配置管理
@@ -61,7 +75,10 @@ D:\agent
 │  └─ chat.py                # 对话式入口
 ├─ cli.py                    # 命令行入口
 ├─ pyproject.toml
-└─ README.md
+├─ quick_test.py             # 快速测试脚本
+├─ README.md                 # 项目说明
+├─ SUMMARY.md                # 目录摘要
+└─ USAGE.md                  # 使用说明
 ```
 
 ## 4. 依赖安装
@@ -82,30 +99,30 @@ pip install -e ".[local]"
 
 ### 5.1 生成数据摘要
 ```powershell
-python cli.py summarize --data-dir "D:\agent\CRWU" --max-files 2
+python cli.py summarize --data_dir "data/CWRU" --max_files 2
 ```
 
 ### 5.2 对话式Agent（三种模式）
 
 **模式1：模拟模式（无需模型，测试用）**
 ```powershell
-python cli.py chat --data-dir "D:\agent\CRWU" --llm simulated
+python cli.py chat --data_dir "data/CWRU" --llm simulated
 ```
 
 **模式2：本地推理（需要下载模型）**
 ```powershell
-python cli.py chat --data-dir "D:\agent\CRWU" --llm local --model microsoft/Phi-3-mini-4k-instruct --device cuda
+python cli.py chat --data_dir "data/CWRU" --llm local --model microsoft/Phi-3-mini-4k-instruct --device cuda
 ```
 
 **模式3：API调用（需提供密钥）**
 ```powershell
-python cli.py chat --data-dir "D:\agent\CRWU" --llm api --api-url "https://api.openai.com/v1" --api-key YOUR_KEY --api-model gpt-3.5-turbo
+python cli.py chat --data_dir "data/CWRU" --llm api --api-url "https://api.openai.com/v1" --api-key YOUR_KEY --api-model gpt-3.5-turbo
 ```
 
 或者使用环境变量：
 ```powershell
 $env:OPENAI_API_KEY="your_key"
-python cli.py chat --data-dir "D:\agent\CRWU" --llm api
+python cli.py chat --data-dir "data/CWRU/" --llm api
 ```
 
 ## 6. LLM集成说明

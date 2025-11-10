@@ -37,7 +37,7 @@ def test_preprocessing():
     print("\n测试数据预处理...")
     try:
         from agentkit.preprocessing import summarize_directory
-        summary = summarize_directory("D:\\agent\\CRWU", max_files_per_folder=1)
+        summary = summarize_directory("data/CWRU", max_files_per_folder=1)
         if len(summary) > 0:
             print("✓ 数据预处理成功，摘要长度:", len(summary))
             return True
@@ -55,7 +55,7 @@ def test_tools():
         from agentkit.tools import load_dataframe, describe_dataframe
         
         # 测试加载（需要真实文件存在）
-        test_file = "D:\\agent\\CRWU\\Normal Baseline\\normal_0.mat"
+        test_file = "data/CWRU/Normal Baseline/normal_0.mat"
         if os.path.exists(test_file):
             df_id = load_dataframe(test_file, "mat")
             print(f"✓ 工具load_dataframe成功，返回ID: {df_id[:20]}")
@@ -97,8 +97,6 @@ def main():
     
     if passed == total:
         print("\n🎉 所有测试通过！可以开始使用Agent了")
-        print("\n运行方式：")
-        print("  python cli.py chat --data-dir D:\\agent\\CRWU --llm simulated")
     else:
         print("\n⚠ 部分测试失败，请检查错误信息")
 

@@ -27,7 +27,7 @@ pip install -e ".[local]"
 无需真实模型，通过规则匹配生成工具调用。
 
 ```powershell
-python cli.py chat --data-dir "D:\agent\CRWU" --llm simulated
+python cli.py chat --data_dir "data/CWRU" --llm simulated
 ```
 
 **使用示例：**
@@ -35,7 +35,7 @@ python cli.py chat --data-dir "D:\agent\CRWU" --llm simulated
 你: 请加载normal_0.mat文件
 [Agent思考]
 Thought: 需要加载数据文件
-Action: load_dataframe(file_path='D:/agent/CRWU/Normal Baseline/normal_0.mat', file_type='mat')
+Action: load_dataframe(file_path='data/CWRU/Normal Baseline/normal_0.mat', file_type='mat')
 
 [调用工具] load_dataframe(...)
 [工具结果] <返回的dataframe_id>
@@ -92,7 +92,7 @@ python cli.py chat --data-dir "D:\agent\CRWU" --llm simulated
 
 [Agent思考]
 Thought: 需要先加载数据文件，然后查看统计信息
-Action: load_dataframe(file_path='D:/agent/CRWU/Normal Baseline/normal_0.mat', file_type='mat')
+Action: load_dataframe(file_path='data/CWRU/Normal Baseline/normal_0.mat', file_type='mat')
 
 [调用工具] load_dataframe(...)
 [工具结果] dataframe_abc123
@@ -144,7 +144,7 @@ IQR异常检测
 $env:OPENAI_API_KEY="sk-..."
 
 # 数据目录
-$env:AGENT_DATA_ROOT="D:\agent\CRWU"
+$env:AGENT_DATA_ROOT="data/CWRU"
 
 # LLM类型
 $env:AGENT_LLM_TYPE="simulated"  # 或 "local", "api"

@@ -15,12 +15,12 @@ def main():
     
     # summarize 命令
     p_sum = sub.add_parser("summarize", help="Summarize a data directory")
-    p_sum.add_argument("--data-dir", required=True, help="Data root directory")
-    p_sum.add_argument("--max-files", type=int, default=2, help="Max files per leaf folder")
+    p_sum.add_argument("--data_dir", required=True, help="Data root directory")
+    p_sum.add_argument("--max_files", type=int, default=2, help="Max files per leaf folder")
     
     # chat 命令
     p_chat = sub.add_parser("chat", help="Interactive chat demo")
-    p_chat.add_argument("--data-dir", required=True, help="Data root directory")
+    p_chat.add_argument("--data_dir", required=True, help="Data root directory")
     
     # LLM配置选项
     p_chat.add_argument(
@@ -41,15 +41,15 @@ def main():
         help="计算设备（仅--llm=local时有效）"
     )
     p_chat.add_argument(
-        "--api-url",
+        "--api_url",
         help="API基础URL（仅--llm=api时有效，如 https://api.openai.com/v1）"
     )
     p_chat.add_argument(
-        "--api-key",
+        "--api_key",
         help="API密钥（仅--llm=api时有效，也可用OPENAI_API_KEY环境变量）"
     )
     p_chat.add_argument(
-        "--api-model",
+        "--api_model",
         default="gpt-3.5-turbo",
         help="API模型名称（仅--llm=api时有效）"
     )

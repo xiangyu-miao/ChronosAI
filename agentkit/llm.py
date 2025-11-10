@@ -172,7 +172,7 @@ class SimulatedLLM(LLMInterface):
     def generate(self, prompt: str, max_tokens: int = 1024, temperature: float = 0.7) -> LLMResponse:
         # 简单的规则匹配演示
         if "load" in prompt.lower() or "加载" in prompt:
-            return LLMResponse(text="Thought: 需要加载数据文件\nAction: load_dataframe(file_path='D:/agent/CRWU/Normal Baseline/normal_0.mat', file_type='mat')")
+            return LLMResponse(text="Thought: 需要加载数据文件\nAction: load_dataframe(file_path='data/CWRU/Normal Baseline/normal_0.mat', file_type='mat')")
         elif "describe" in prompt.lower() or "描述" in prompt or "统计" in prompt:
             return LLMResponse(text="Thought: 查看数据基本信息\nAction: describe_dataframe(dataframe_id='<last_df_id>')")
         elif "plot" in prompt.lower() or "图表" in prompt or "可视化" in prompt:
@@ -180,8 +180,8 @@ class SimulatedLLM(LLMInterface):
         elif "anomal" in prompt.lower() or "异常" in prompt:
             return LLMResponse(text="Thought: 检测异常值\nAction: detect_anomalies_iqr(dataframe_id='<last_df_id>', value_column='value')")
         else:
-            return LLMResponse(text="Thought: 我理解了你的需求，让我开始处理\nAction: load_dataframe(file_path='D:/agent/CRWU/Normal Baseline/normal_0.mat', file_type='mat')")
-    
+            return LLMResponse(text="Thought: 我理解了你的需求，让我开始处理\nAction: load_dataframe(file_path='data/CWRU/Normal Baseline/normal_0.mat', file_type='mat')")
+
     def chat(self, messages: List[Dict], max_tokens: int = 1024, temperature: float = 0.7) -> LLMResponse:
         last_msg = messages[-1].get("content", "") if messages else ""
         return self.generate(last_msg, max_tokens, temperature)
